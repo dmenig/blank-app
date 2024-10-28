@@ -176,7 +176,7 @@ st.title("🎈 Hero wars Legends Draft outcome prediction")
 options = sorted(list(heroes_correspondances.values()))
 level_options = [3, 4, 5, 6]
 # User input section with dropdowns
-st.write("Please select the values for prediction:")
+st.write("Please select the values for prediction. The order doesn't matter.")
 
 # Define columns for Attack and Defense inputs
 col1, col2 = st.columns(2)
@@ -226,3 +226,44 @@ if st.button("Predict"):
     
     # Display prediction
     st.write(f"Attack team has a {round(100*prediction, 2)}% chance to win")
+
+import numpy as np
+# Create a button to make predictions
+if st.button("Advise"):
+    # Prepare the input tensor (modify based on your model’s expected input format)
+    attack_heroes_ids = [correspondances[hero_name] for hero_name in attack_hero_inputs]
+    team_tensor = torch.zeros((1, num_heroes))
+    for hero_name, hero_level in zip(attack_hero_inputs, attack_level_inputs):
+        team_tensor[0, correspondances[hero_name]] = (hero_level - 2.0) / 4.0
+    opposing_team = torch.zeros((1, num_heroes))
+    for hero_name, hero_level in zip(defense_hero_inputs, defense_level_inputs):
+        opposing_team[0, correspondances[hero_name]] = (hero_level - 2.0) / 4.0
+    # Make prediction
+    with torch.no_grad():
+        current_win_probability = model(team_tensor, opposing_team)[0].item()
+    heroes_to_swap = torch.nonzero(team_tensor)
+    heroes_swap_options = {}
+    for hero_index_to_swap in range(5):
+        hero_alternate_teams = torch.clone(team_tensor).repeat(num_heroes, 1)
+        hero_to_swap = heroes_to_swap[hero_index_to_swap][1].item()
+        hero_level = team_tensor[0, hero_to_swap]
+        hero_swap_options = {} 
+        for hero_id in range(num_heroes):
+            hero_alternate_teams[hero_id, hero_to_swap] = 0.
+            hero_alternate_teams[hero_id, hero_id] = hero_level
+        with torch.no_grad():
+            prediction = model(hero_alternate_teams, opposing_team.repeat(num_heroes, 1)).numpy().ravel()
+        best_heroes = np.argsort(prediction)
+        for hero_id in best_heroes[::-1]:
+            if hero_id not in attack_heroes_ids:
+                win_probability = prediction[hero_id]
+                best_hero_to_swap_for = hero_id
+                break
+        heroes_swap_options[correspondances.inverse[hero_to_swap]] = [correspondances.inverse[best_hero_to_swap_for], win_probability]
+    hero_to_swap, (chosen_hero, better_win_probability) = max(heroes_swap_options.items(), key=lambda x:x[1][1])
+    if better_win_probability > current_win_probability:
+        better_win_probability = round(100 * better_win_probability, 2)
+        # Display prediction
+        st.write(f"Swap out {hero_to_swap} for {chosen_hero} to increase your win probability to {better_win_probability:.2f}%")
+    else:
+        st.write(f"According to me, there is no better attack team than this one to beat the current defense team.")
