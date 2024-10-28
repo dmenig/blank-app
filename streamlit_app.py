@@ -168,7 +168,7 @@ model = load_model()
 st.title("🎈 Hero wars Legends Draft outcome prediction")
 
 # Define dropdown options
-options = sorted(list(heroes_correspondances.values()))
+options = sorted(list(correspondances.keys()))
 level_options = [3, 4, 5, 6]
 # User input section with dropdowns
 st.write("Please send you fight screenshots at menigauxdamien@hotmail.fr to improve the algorithm :) (don't compress the images !)")
