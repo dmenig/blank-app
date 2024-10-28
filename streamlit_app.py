@@ -1,10 +1,5 @@
 import streamlit as st
-try:
-    import torch
-except:
-    import os
-    os.system("pip install torch --index-url https://download.pytorch.org/whl/cpu")
-    import torch
+import torch
 import torch.nn as nn
 
 heroes_correspondances = {
@@ -176,7 +171,7 @@ st.title("🎈 Hero wars Legends Draft outcome prediction")
 options = sorted(list(heroes_correspondances.values()))
 level_options = [3, 4, 5, 6]
 # User input section with dropdowns
-st.write("Please select the values for prediction. The order doesn't matter.")
+st.write("Select the teams and predict the fight outcome for the attack team. The order doesn't matter.")
 
 # Define columns for Attack and Defense inputs
 col1, col2 = st.columns(2)
