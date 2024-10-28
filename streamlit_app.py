@@ -171,6 +171,7 @@ st.title("🎈 Hero wars Legends Draft outcome prediction")
 options = sorted(list(heroes_correspondances.values()))
 level_options = [3, 4, 5, 6]
 # User input section with dropdowns
+st.write("Please send you fight screenshots at menigauxdamien@hotmail.fr to improve the algorithm :) (don't compress the images !)")
 st.write("Select the teams and predict the fight outcome for the attack team. The order doesn't matter.")
 
 # Define columns for Attack and Defense inputs
