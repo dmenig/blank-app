@@ -158,7 +158,7 @@ dropout_rate = best_params["dropout_rate"]
 
 
 # Load your model
-@st.cache(allow_output_mutation=True)
+@st.cache_resource
 def load_model():
     model = SimpleFightPredictor(
         num_heroes=num_heroes, hidden_dim=hidden_dim, dropout_rate=dropout_rate
@@ -178,17 +178,36 @@ level_options = [3, 4, 5, 6]
 # User input section with dropdowns
 st.write("Please select the values for prediction:")
 
-attack_hero_inputs = []
-attack_level_inputs = []
-for i in range(5):
-    attack_hero_inputs.append(st.selectbox(f"Attack hero {i+1}", options, index=0, key=f"input_{i}_hero_attack"))
-    attack_level_inputs.append(st.selectbox(f"Attack hero star level {i+1}", level_options, index=0, key=f"input_{i}_level_attack"))
+# Define columns for Attack and Defense inputs
+col1, col2 = st.columns(2)
 
-defense_hero_inputs = []
-defense_level_inputs = []
-for i in range(5):
-    defense_hero_inputs.append(st.selectbox(f"Defense hero {i+1}", options, index=0, key=f"input_{i}_hero_defense"))
-    defense_level_inputs.append(st.selectbox(f"Defense hero start level {i+1}", level_options, index=0, key=f"input_{i}_level_defense"))
+# Attack inputs (left column)
+with col1:
+    st.subheader("Attack Team")
+    attack_hero_inputs = []
+    attack_level_inputs = []
+    for i in range(5):
+        row = st.columns(2)
+        with row[0]:
+            hero_input = st.selectbox(f"Attack hero {i+1}", options, index=0, key=f"input_{i}_hero_attack")
+        with row[1]:
+            level_input = st.selectbox(f"Attack hero star level {i+1}", level_options, index=0, key=f"input_{i}_level_attack")
+        attack_hero_inputs.append(hero_input)
+        attack_level_inputs.append(level_input)
+
+# Defense inputs (right column)
+with col2:
+    st.subheader("Defense Team")
+    defense_hero_inputs = []
+    defense_level_inputs = []
+    for i in range(5):
+        row = st.columns(2)
+        with row[0]:
+            hero_input = st.selectbox(f"Defense hero {i+1}", options, index=0, key=f"input_{i}_hero_defense")
+        with row[1]:
+            level_input = st.selectbox(f"Defense hero star level {i+1}", level_options, index=0, key=f"input_{i}_level_defense")
+        defense_hero_inputs.append(hero_input)
+        defense_level_inputs.append(level_input)
 
 # Create a button to make predictions
 if st.button("Predict"):
