@@ -189,9 +189,9 @@ with col1:
     for i in range(5):
         row = st.columns(2)
         with row[0]:
-            hero_input = st.selectbox(f"Attack hero {i+1}", options, index=0, key=f"input_{i}_hero_attack")
+            hero_input = st.selectbox(f"Hero", options, index=0, key=f"input_{i}_hero_attack")
         with row[1]:
-            level_input = st.selectbox(f"Attack hero star level {i+1}", level_options, index=0, key=f"input_{i}_level_attack")
+            level_input = st.selectbox(f"Star level", level_options, index=0, key=f"input_{i}_level_attack")
         attack_hero_inputs.append(hero_input)
         attack_level_inputs.append(level_input)
 
@@ -203,9 +203,9 @@ with col2:
     for i in range(5):
         row = st.columns(2)
         with row[0]:
-            hero_input = st.selectbox(f"Defense hero {i+1}", options, index=0, key=f"input_{i}_hero_defense")
+            hero_input = st.selectbox(f"Hero", options, index=0, key=f"input_{i}_hero_defense")
         with row[1]:
-            level_input = st.selectbox(f"Defense hero star level {i+1}", level_options, index=0, key=f"input_{i}_level_defense")
+            level_input = st.selectbox(f"Star level", level_options, index=0, key=f"input_{i}_level_defense")
         defense_hero_inputs.append(hero_input)
         defense_level_inputs.append(level_input)
 
