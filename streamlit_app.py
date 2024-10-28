@@ -266,4 +266,4 @@ if st.button("Advise"):
         # Display prediction
         st.write(f"Swap out {hero_to_swap} for {chosen_hero} to increase your win probability to {better_win_probability:.2f}%")
     else:
-        st.write(f"According to me, there is no better attack team than this one to beat the current defense team.")
+        st.write(f"According to me, any swapout would reduce the win probability against the current defense team.")
