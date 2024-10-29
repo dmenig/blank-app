@@ -135,20 +135,6 @@ class SimpleFightPredictor(nn.Module):
         return self.final_fc(combined_rep)  # Shape: (batch_size, 1)
 
 
-best_params = {
-    "hidden_dim": 1904,
-    "batch_size": 8,
-    "optim": "SGD",
-    "decay": 0.0003158359706882851,
-    "lr": 0.11364436878365329,
-    "dropout_rate": 0.12202705797845492,
-}
-hidden_dim = best_params["hidden_dim"]
-batch_size = best_params["batch_size"]
-optim = best_params["optim"]
-decay = best_params["decay"]
-lr = best_params["lr"]
-dropout_rate = best_params["dropout_rate"]
 
 
 
@@ -156,7 +142,7 @@ dropout_rate = best_params["dropout_rate"]
 @st.cache_resource
 def load_model():
     model = SimpleFightPredictor(
-        num_heroes=num_heroes, hidden_dim=hidden_dim, dropout_rate=dropout_rate
+        num_heroes=num_heroes, hidden_dim=128, dropout_rate=0
     )
     model.load_state_dict(torch.load("best_model.pth"))
     model = model.eval()
