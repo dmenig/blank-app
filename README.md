@@ -13,3 +13,10 @@
    ```
    $ streamlit run streamlit_app.py
    ```
+
+
+### Developer Notes
+
+I built this based on my past fights outcomes. I update this frequently with new fights, and I'd be glad to receive your data to improve the predictor's accuracy. Feel free to request new features !
+
+Please send you fight screenshots at menigauxdamien@hotmail.fr :) (don't compress the images !)
